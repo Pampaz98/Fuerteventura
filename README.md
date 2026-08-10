@@ -89,13 +89,13 @@ Tutto si modifica in `assets/js/data.js`, senza toccare altro:
 
 | Giorno | Programma | Guida stimata |
 |---|---|---|
-| Sab 15 | Dune di Corralejo, Playa del Moro, tramonto al Muelle Chico | 35 min |
+| Sab 15 | Calderón Hondo presto, dune, tramonto sotto Tindaya | 1h35 |
 | Dom 16 | **Sotavento** con la laguna al massimo (bassa marea 12:45, marea viva), Costa Calma, tramonto a La Pared | 3h54 |
 | Lun 17 | Lagunas de El Cotillo, Faro del Tostón con le pozze (bassa 13:30), tramonto a Piedra Playa | 1h31 |
 | Mar 18 | **Cofete** e Villa Winter, tramonto a Morro Jable | 5h44 |
 | Mer 19 | **Isla de Lobos** (recupero), Playa Chica, kite a Flag Beach | 50 min |
 | Gio 20 | Betancuria, grotte di **Ajuy** (bassa 15:49), tramonto a Puertito de los Molinos | 2h52 |
-| Ven 21 | Calderón Hondo all'alba, dune, tramonto sotto Tindaya | 1h35 |
+| Ven 21 | Dune di Corralejo, Playa del Moro, aperitivo d'addio al Muelle Chico | 35 min |
 
 Le giornate lunghe (16, 18, 20) sono alternate a giornate corte, e Sotavento cade nei giorni di
 marea viva, quando la laguna è più estesa.

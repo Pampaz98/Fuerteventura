@@ -524,10 +524,10 @@ const TRIP = {
    È solo un punto di partenza: si cambia tutto dall'app.
    ------------------------------------------------------------------------- */
 const PROPOSAL = [
-  { // Sabato 15 — rodaggio a Corralejo, quasi senza auto
-    slots: { mattina: 'grandes-playas', pomeriggio: 'playa-del-moro', tramonto: 'muelle-chico', sera: null },
-    meals: { pranzo: { t: 'sacco' }, cena: { t: 'rest', id: 'f-muelle' } },
-    note: 'Giornata di rodaggio: spesa grossa a Corralejo (ombrellone, ghiaccio, acqua). Bassa marea a mezzogiorno. Sulle dune ci si ferma dove si vuole lungo la FV-1a: più si va a sud, meno gente.'
+  { // Sabato 15 — primo giro nel nord
+    slots: { mattina: 'calderon-hondo', pomeriggio: 'playa-alzada', tramonto: 'tindaya', sera: null },
+    meals: { pranzo: { t: 'rest', id: 'f-lajares' }, cena: { t: 'rest', id: 'f-marquesina' } },
+    note: 'Prima giornata piena, tutta nel nord e senza fretta. Calderón Hondo presto, prima del caldo (45 min a piedi a/r dal parcheggio di Lajares), pranzo a Lajares, pomeriggio di dune e tramonto sotto Tindaya. Se manca qualcosa per la spiaggia (ombrellone, ghiaccio, acqua), i negozi di Corralejo e il mercatino di Lajares sono sulla strada.'
   },
   { // Domenica 16 — Sotavento con la laguna al massimo
     slots: { mattina: 'sotavento', pomeriggio: 'costa-calma', tramonto: 'la-pared', sera: null },
@@ -554,10 +554,10 @@ const PROPOSAL = [
     meals: { pranzo: { t: 'rest', id: 'f-betancuria' }, cena: { t: 'rest', id: 'f-molinos' } },
     note: 'Giornata nell\'entroterra. Bassa marea alle 15:49: le grotte di Ajuy si visitano bene nel pomeriggio (scarpe chiuse, 20 min di salita). Sulla strada vale la sosta al Mirador de Morro Velosa (chiuso il lunedì) e al Mirador Guise y Ayose.'
   },
-  { // Venerdì 21 — ultimo giro nel nord
-    slots: { mattina: 'calderon-hondo', pomeriggio: 'playa-alzada', tramonto: 'tindaya', sera: null },
-    meals: { pranzo: { t: 'rest', id: 'f-lajares' }, cena: { t: 'rest', id: 'f-marquesina' } },
-    note: 'Calderón Hondo presto, prima del caldo (45 min a piedi a/r dal parcheggio di Lajares). Pomeriggio di dune e ultimo bagno, tramonto sotto Tindaya. Fare benzina e valigie stasera: domani si parte.'
+  { // Venerdì 21 — ultimo giorno a due passi da casa
+    slots: { mattina: 'grandes-playas', pomeriggio: 'playa-del-moro', tramonto: 'muelle-chico', sera: null },
+    meals: { pranzo: { t: 'sacco' }, cena: { t: 'rest', id: 'f-muelle' } },
+    note: 'Ultimo giorno senza auto, o quasi: dune tutto il giorno (ci si ferma dove si vuole lungo la FV-1a, più si va a sud meno gente) e aperitivo di addio al Muelle Chico. Bassa marea alle 16:39. Stasera valigie e pieno di benzina, domani si riconsegna l\'auto.'
   }
 ];
 
