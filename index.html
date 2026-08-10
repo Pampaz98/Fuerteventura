@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fuerteventura 2026 — Itinerario</title>
+<meta name="description" content="Itinerario interattivo Fuerteventura 14–22 agosto 2026: database spiagge e luoghi, calendario per fasce orarie e mappa dei percorsi.">
+<meta name="theme-color" content="#0b3c5d">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝️</text></svg>">
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-emoji">🏝️</span>
+    <div>
+      <h1>Fuerteventura 2026</h1>
+      <p class="brand-sub">14 → 22 agosto · base Corralejo · <span id="countdown"></span></p>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button class="tab is-active" data-view="calendario" role="tab">📅 Calendario</button>
+    <button class="tab" data-view="mappa" role="tab">🗺️ Mappa</button>
+    <button class="tab" data-view="database" role="tab">📚 Database</button>
+    <button class="tab" data-view="riepilogo" role="tab">🧾 Riepilogo</button>
+  </nav>
+  <div class="topbar-actions">
+    <button class="btn btn-primary" id="btn-share">🔗 Condividi</button>
+    <details class="menu">
+      <summary class="btn">⋯</summary>
+      <div class="menu-panel">
+        <button class="menu-item" id="btn-export">⬇️ Esporta JSON</button>
+        <button class="menu-item" id="btn-import">⬆️ Importa JSON</button>
+        <button class="menu-item" id="btn-print">🖨️ Stampa / PDF</button>
+        <button class="menu-item danger" id="btn-reset">🗑️ Svuota itinerario</button>
+        <input type="file" id="file-import" accept="application/json" hidden>
+      </div>
+    </details>
+  </div>
+</header>
+
+<main>
+  <!-- ======================= CALENDARIO ======================= -->
+  <section class="view is-active" id="view-calendario">
+    <div class="edge-day" id="edge-arrival"></div>
+    <div class="days" id="days"></div>
+    <div class="edge-day" id="edge-departure"></div>
+  </section>
+
+  <!-- ========================= MAPPA ========================== -->
+  <section class="view" id="view-mappa">
+    <div class="map-wrap">
+      <div id="map"></div>
+      <div class="map-legend" id="map-legend"></div>
+    </div>
+  </section>
+
+  <!-- ======================== DATABASE ======================== -->
+  <section class="view" id="view-database">
+    <div class="filters">
+      <input type="search" id="db-search" placeholder="Cerca un posto, un tag, una zona…" autocomplete="off">
+      <select id="db-type">
+        <option value="">Tutti i tipi</option>
+        <option value="spiaggia">🏖️ Spiagge</option>
+        <option value="natura">🌋 Natura</option>
+        <option value="borgo">🏘️ Borghi</option>
+        <option value="panorama">👁️ Panorami</option>
+        <option value="cultura">🏛️ Cultura</option>
+        <option value="attivita">🎯 Attività</option>
+      </select>
+      <select id="db-zone"><option value="">Tutte le zone</option></select>
+      <select id="db-access">
+        <option value="">Ogni accesso</option>
+        <option value="facile">Facile (asfalto)</option>
+        <option value="medio">Medio</option>
+        <option value="difficile">Sterrato</option>
+        <option value="4x4">Solo 4x4</option>
+        <option value="barca">In barca</option>
+      </select>
+      <select id="db-max">
+        <option value="999">Qualsiasi distanza</option>
+        <option value="20">≤ 20 min da Corralejo</option>
+        <option value="40">≤ 40 min</option>
+        <option value="60">≤ 1 ora</option>
+        <option value="90">≤ 1h30</option>
+      </select>
+      <select id="db-sort">
+        <option value="min">Ordina: più vicini</option>
+        <option value="name">Ordina: nome</option>
+        <option value="zone">Ordina: zona</option>
+      </select>
+    </div>
+    <p class="db-count" id="db-count"></p>
+    <div class="cards" id="db-cards"></div>
+  </section>
+
+  <!-- ======================= RIEPILOGO ======================== -->
+  <section class="view" id="view-riepilogo">
+    <div id="summary"></div>
+  </section>
+</main>
+
+<!-- ===================== MODALE SELEZIONE ===================== -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-box" role="dialog" aria-modal="true">
+    <header class="modal-head">
+      <div>
+        <h2 id="modal-title">Scegli un posto</h2>
+        <p id="modal-sub" class="modal-sub"></p>
+      </div>
+      <button class="icon-btn" data-close aria-label="Chiudi">✕</button>
+    </header>
+    <div class="modal-tools">
+      <input type="search" id="modal-search" placeholder="Filtra…" autocomplete="off">
+      <button class="chip chip-clear" id="modal-clear">Svuota questa fascia</button>
+    </div>
+    <div class="modal-list" id="modal-list"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<footer class="site-foot">
+  <p>Tempi di percorrenza e accessi sono stime: verificate su Google Maps il giorno stesso. Le foto arrivano da Wikimedia Commons.</p>
+</footer>
+
+<script src="assets/vendor/leaflet/leaflet.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/map.js"></script>
+<script>document.addEventListener('DOMContentLoaded', App.init);</script>
+</body>
+</html>
