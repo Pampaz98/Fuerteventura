@@ -31,6 +31,7 @@
     <details class="menu">
       <summary class="btn">⋯</summary>
       <div class="menu-panel">
+        <button class="menu-item" id="btn-proposal">✨ Ricarica l'itinerario proposto</button>
         <button class="menu-item" id="btn-export">⬇️ Esporta JSON</button>
         <button class="menu-item" id="btn-import">⬆️ Importa JSON</button>
         <button class="menu-item" id="btn-print">🖨️ Stampa / PDF</button>
@@ -125,10 +126,13 @@
 
 <footer class="site-foot">
   <p>Tempi di percorrenza e accessi sono stime: verificate su Google Maps il giorno stesso. Le foto arrivano da Wikimedia Commons.</p>
+  <p>Le maree sono calcolate dal transito lunare (stima ±45 min): prima di contare sulla bassa marea controllate la
+  <a href="https://tablademareas.com/es/fuerteventura/corralejo" target="_blank" rel="noopener">tabella ufficiale di Corralejo</a>.</p>
 </footer>
 
 <script src="assets/vendor/leaflet/leaflet.js"></script>
 <script src="assets/js/data.js"></script>
+<script src="assets/js/tides.js"></script>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/map.js"></script>
 <script>document.addEventListener('DOMContentLoaded', App.init);</script>

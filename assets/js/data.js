@@ -27,7 +27,7 @@ const PLACES = [
     id: 'grandes-playas', name: 'Grandes Playas / Dune di Corralejo', type: 'spiaggia', zone: 'Nord',
     lat: 28.7089, lng: -13.8317, min: 8, access: 'facile', road: 'asfalto',
     park: 'Si parcheggia lungo la FV-1a, gratis, tantissimi spiazzi',
-    tags: ['sabbia bianca', 'iconica', 'famiglia', 'vento'], best: 'mattina',
+    tags: ['sabbia bianca', 'iconica', 'famiglia', 'vento'], best: 'mattina', tide: 'bassa', tideWhy: 'con la bassa si apre una lingua di sabbia enorme',
     desc: 'Chilometri di sabbia bianca e acqua turchese dentro il Parco Naturale delle Dune. La spiaggia simbolo dell\'isola: ci si ferma dove si vuole lungo la strada.',
     wiki: 'Parque natural de Corralejo'
   },
@@ -71,7 +71,7 @@ const PLACES = [
     id: 'faro-toston', name: 'Faro del Tostón', type: 'panorama', zone: 'Nord',
     lat: 28.7255, lng: -14.0093, min: 30, access: 'facile', road: 'asfalto',
     park: 'Grande spiazzo davanti al faro',
-    tags: ['faro', 'tramonto', 'museo', 'onde'], best: 'tramonto',
+    tags: ['faro', 'tramonto', 'museo', 'onde'], best: 'tramonto', tide: 'bassa', tideWhy: 'le pozze di marea emergono con la bassa',
     desc: 'Faro a strisce bianche e rosse sulla punta nord-ovest, con museo della pesca tradizionale. Le pozze di marea intorno sono spettacolari al tramonto.',
     wiki: 'Faro del Tostón'
   },
@@ -79,7 +79,7 @@ const PLACES = [
     id: 'lagunas-cotillo', name: 'Lagunas de El Cotillo (Playa de la Concha)', type: 'spiaggia', zone: 'Nord',
     lat: 28.6944, lng: -14.0110, min: 27, access: 'facile', road: 'asfalto',
     park: 'Parcheggi sterrati sopra le lagune',
-    tags: ['acqua calma', 'famiglia', 'turchese', 'snorkeling'], best: 'mattina',
+    tags: ['acqua calma', 'famiglia', 'turchese', 'snorkeling'], best: 'mattina', tide: 'alta', tideWhy: 'con la bassa restano pochi centimetri d\'acqua: meglio marea medio-alta',
     desc: 'Piscine naturali di acqua turchese e calmissima protette da barriere di roccia: la zona più "caraibica" dell\'isola e la scelta migliore quando il vento tira.',
     wiki: 'El Cotillo'
   },
@@ -101,7 +101,7 @@ const PLACES = [
     id: 'majanicho', name: 'Majanicho', type: 'borgo', zone: 'Nord',
     lat: 28.7455, lng: -13.9310, min: 25, access: 'difficile', road: 'sterrato',
     park: 'Sterrato pieno di buche (fattibile con utilitaria, piano)',
-    tags: ['surf', 'autentico', 'pozze', 'fuori rotta'], best: 'pomeriggio',
+    tags: ['surf', 'autentico', 'pozze', 'fuori rotta'], best: 'pomeriggio', tide: 'bassa', tideWhy: 'le pozze si formano con la bassa marea',
     desc: 'Micro-villaggio di casette bianche di pescatori sulla costa nord selvaggia, tra spot da surf e pozze naturali. Zero turismo, tanto vento.'
   },
   {
@@ -190,7 +190,7 @@ const PLACES = [
     id: 'ajuy', name: 'Ajuy e le Grotte (Caleta Negra)', type: 'natura', zone: 'Ovest',
     lat: 28.3970, lng: -14.1510, min: 60, access: 'medio', road: 'asfalto',
     park: 'Parcheggio all\'ingresso del paese, poi 20 min a piedi in salita',
-    tags: ['grotte', 'sabbia nera', 'falesie', 'geologia'], best: 'pomeriggio',
+    tags: ['grotte', 'sabbia nera', 'falesie', 'geologia'], best: 'pomeriggio', tide: 'bassa', tideWhy: 'le grotte si raggiungono in sicurezza con la bassa marea',
     desc: 'Spiaggia di sabbia nera e sentiero a picco sull\'oceano fino alle grotte marine scavate nelle rocce più antiche delle Canarie (70 milioni di anni). Da non perdere.',
     wiki: 'Ajuy'
   },
@@ -198,7 +198,7 @@ const PLACES = [
     id: 'aguas-verdes', name: 'Aguas Verdes', type: 'spiaggia', zone: 'Ovest',
     lat: 28.4569, lng: -14.0983, min: 60, access: 'difficile', road: 'sterrato',
     park: 'Pista sterrata lunga dalla FV-30',
-    tags: ['pozze', 'selvaggia', 'sabbia nera'], best: 'pomeriggio',
+    tags: ['pozze', 'selvaggia', 'sabbia nera'], best: 'pomeriggio', tide: 'bassa', tideWhy: 'le piscine naturali si usano solo con bassa marea e mare piatto',
     desc: 'Tratto di costa selvaggia con calette nere e piscine naturali tra le rocce. Bagno solo con mare piatto e bassa marea.'
   },
   {
@@ -346,7 +346,7 @@ const PLACES = [
     id: 'sotavento', name: 'Playa de Sotavento & Laguna', type: 'spiaggia', zone: 'Sud (Jandia)',
     lat: 28.1178, lng: -14.2261, min: 95, access: 'facile', road: 'asfalto',
     park: 'Parcheggio di Risco del Paso / Los Gorriones',
-    tags: ['laguna', 'kitesurf', 'iconica', 'marea'], best: 'pomeriggio',
+    tags: ['laguna', 'kitesurf', 'iconica', 'marea'], best: 'pomeriggio', tide: 'bassa', tideWhy: 'la laguna si forma solo con la bassa marea',
     desc: 'La spiaggia più fotografata dell\'isola: con la bassa marea si forma una laguna azzurra chilometrica alta pochi centimetri. Controllare le maree prima di andare — è tutto lì.',
     wiki: 'Playa de Sotavento'
   },
@@ -398,7 +398,7 @@ const PLACES = [
     id: 'playa-mal-nombre', name: 'Playa de Mal Nombre', type: 'spiaggia', zone: 'Sud (Jandia)',
     lat: 28.0930, lng: -14.3280, min: 100, access: 'medio', road: 'misto',
     park: 'Sterrato breve dalla FV-2, poi sentiero',
-    tags: ['selvaggia', 'nudismo', 'deserta'], best: 'pomeriggio',
+    tags: ['selvaggia', 'nudismo', 'deserta'], best: 'pomeriggio', tide: 'bassa', tideWhy: 'con l\'alta la spiaggia si riduce parecchio',
     desc: 'Cala selvaggia sotto la strada di Jandía, senza servizi e quasi sempre vuota nonostante sia a pochi minuti dagli hotel.'
   },
 
@@ -490,6 +490,54 @@ const TRIP = {
     { date: '2026-08-21', label: 'Venerdì 21 agosto',  sunset: '20:45' }
   ]
 };
+
+/* -------------------------------------------------------------------------
+   PROPOSTA DI ITINERARIO (5 persone, ritmo tranquillo, base Corralejo)
+   Costruita sulle maree reali di quei giorni:
+     · 14-17 ago maree vive (novilunio del 12): bassa marea a metà giornata
+       -> Sotavento e le pozze del Faro del Tostón danno il massimo
+     · 19-22 ago maree morte: escursione ridotta, poco importante per il resto
+   Le giornate lunghe (Sotavento, Cofete, entroterra) sono alternate a
+   giornate corte, e Cofete è al martedì come richiesto.
+   È solo un punto di partenza: si cambia tutto dall'app.
+   ------------------------------------------------------------------------- */
+const PROPOSAL = [
+  { // Sabato 15 — rodaggio a Corralejo, quasi senza auto
+    slots: { mattina: 'grandes-playas', pomeriggio: 'playa-del-moro', tramonto: 'muelle-chico', sera: null },
+    meals: { pranzo: { t: 'sacco' }, cena: { t: 'rest', id: 'f-muelle' } },
+    note: 'Giornata di rodaggio: spesa grossa a Corralejo (ombrellone, ghiaccio, acqua). Bassa marea a mezzogiorno. Sulle dune ci si ferma dove si vuole lungo la FV-1a: più si va a sud, meno gente.'
+  },
+  { // Domenica 16 — Sotavento con la laguna al massimo
+    slots: { mattina: 'sotavento', pomeriggio: 'costa-calma', tramonto: 'la-pared', sera: null },
+    meals: { pranzo: { t: 'sacco' }, cena: { t: 'rest', id: 'f-lapared' } },
+    note: 'IL giorno per Sotavento: bassa marea alle 12:45 con marea viva, la laguna è al massimo tra le 11 e le 15. Partenza verso le 8:30 (1h35 di strada). Tanta acqua e crema: lì non c\'è ombra. Attenzione al rientro: cenando a La Pared si torna a Corralejo verso mezzanotte e mezza — se preferite rientrare prima, cenate a Costa Calma e saltate La Pared.'
+  },
+  { // Lunedì 17 — El Cotillo e il nord-ovest
+    slots: { mattina: 'lagunas-cotillo', pomeriggio: 'faro-toston', tramonto: 'piedra-playa', sera: null },
+    meals: { pranzo: { t: 'rest', id: 'f-cotillo-port' }, cena: { t: 'rest', id: 'f-vaca-azul' } },
+    note: 'Giornata corta dopo Sotavento. Bassa marea alle 13:30: le pozze intorno al Faro del Tostón sono al meglio nel primo pomeriggio. A Piedra Playa si entra in acqua solo se è calma: correnti forti.'
+  },
+  { // Martedì 18 — Cofete (giornata lunga)
+    slots: { mattina: 'cofete', pomeriggio: 'villa-winter', tramonto: 'morro-jable', sera: null },
+    meals: { pranzo: { t: 'rest', id: 'f-cofete' }, cena: { t: 'rest', id: 'f-morrojable' } },
+    note: 'Sveglia presto (partenza 7:30): 1h50 fino a Morro Jable più 45-60 min di pista per Cofete. La Jeep Avenger è a trazione anteriore e il contratto di noleggio quasi certamente vieta gli sterrati: controllate il contratto, in alternativa c\'è la navetta 4x4 da Morro Jable. A Cofete NON si fa il bagno: correnti mortali. Pieno di benzina prima di scendere.'
+  },
+  { // Mercoledì 19 — Isla de Lobos, recupero
+    slots: { mattina: 'isla-lobos', pomeriggio: 'playa-chica-corralejo', tramonto: 'kite-flag-beach', sera: null },
+    meals: { pranzo: { t: 'sacco' }, cena: { t: 'rest', id: 'f-avenida' } },
+    note: 'PERMESSO GRATUITO OBBLIGATORIO per Lobos, da prenotare online settimane prima (posti limitati) + biglietto del traghetto. Sull\'isola non c\'è quasi nulla: portare acqua e pranzo. Giornata di recupero dopo Cofete.'
+  },
+  { // Giovedì 20 — Betancuria, Ajuy e il tramonto dei Molinos
+    slots: { mattina: 'betancuria', pomeriggio: 'ajuy', tramonto: 'los-molinos', sera: null },
+    meals: { pranzo: { t: 'rest', id: 'f-betancuria' }, cena: { t: 'rest', id: 'f-molinos' } },
+    note: 'Giornata nell\'entroterra. Bassa marea alle 15:49: le grotte di Ajuy si visitano bene nel pomeriggio (scarpe chiuse, 20 min di salita). Sulla strada vale la sosta al Mirador de Morro Velosa (chiuso il lunedì) e al Mirador Guise y Ayose.'
+  },
+  { // Venerdì 21 — ultimo giro nel nord
+    slots: { mattina: 'calderon-hondo', pomeriggio: 'playa-alzada', tramonto: 'tindaya', sera: null },
+    meals: { pranzo: { t: 'rest', id: 'f-lajares' }, cena: { t: 'rest', id: 'f-marquesina' } },
+    note: 'Calderón Hondo presto, prima del caldo (45 min a piedi a/r dal parcheggio di Lajares). Pomeriggio di dune e ultimo bagno, tramonto sotto Tindaya. Fare benzina e valigie stasera: domani si parte.'
+  }
+];
 
 const SLOTS = [
   { id: 'mattina',    label: 'Mattina',    icon: '🌅', hint: '09:00 – 13:00' },

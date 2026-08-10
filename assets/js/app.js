@@ -27,6 +27,18 @@ const App = (() => {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* modalità privata */ }
   }
 
+  /** L'itinerario proposto, come stato iniziale. */
+  function proposalState() {
+    const st = emptyState();
+    PROPOSAL.forEach((d, i) => {
+      if (!st.days[i]) return;
+      SLOT_IDS.forEach(s => { st.days[i].slots[s] = d.slots[s] || null; });
+      st.days[i].meals = { pranzo: d.meals.pranzo || null, cena: d.meals.cena || null };
+      st.days[i].note = d.note || '';
+    });
+    return st;
+  }
+
   function load() {
     const fromUrl = decodeState(location.hash.replace(/^#i=/, ''));
     if (fromUrl) { state = fromUrl; save(); return; }
@@ -34,9 +46,10 @@ const App = (() => {
       const raw = localStorage.getItem(STORE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && Array.isArray(parsed.days) && parsed.days.length === TRIP.days.length) state = parsed;
+        if (parsed && Array.isArray(parsed.days) && parsed.days.length === TRIP.days.length) { state = parsed; return; }
       }
     } catch (e) { /* ignora */ }
+    state = proposalState();   // primo accesso: si parte dalla proposta
   }
 
   /* ------------------- serializzazione compatta per il link ----------- */
@@ -84,15 +97,33 @@ const App = (() => {
     return 2 * R * Math.asin(Math.sqrt(h));
   }
 
-  /** Stima minuti d'auto tra due punti (fattore tortuosità + velocità per tipo di strada). */
+  /** Minuti su strada asfaltata: distanza in linea d'aria + tortuosità, velocità per tratta. */
+  function asphaltMinutes(a, b) {
+    const km = haversine(a, b) * 1.28;
+    if (km < 0.4) return 0;
+    const speed = km > 30 ? 74 : km > 10 ? 58 : 42;
+    return Math.round(km / speed * 60 + 3);
+  }
+
+  /* Sovrapprezzo di ogni posto rispetto all'asfalto puro: è quanto costano la pista
+     sterrata, i tornanti o la camminata finale. Si ricava dal dato curato `min`
+     (minuti reali da Corralejo), così i tempi in app coincidono con quelli del database. */
+  const extraMin = {};
+  PLACES.forEach(p => { extraMin[p.id] = Math.max(0, p.min - asphaltMinutes(CORRALEJO, p)); });
+
+  /**
+   * Stima dei minuti d'auto tra due punti. La penalità dello sterrato si paga
+   * per intero solo se le due tappe non condividono la stessa pista: due posti
+   * vicini (Cofete e Villa Winter) si raggiungono con un unico avvicinamento.
+   */
   function travelMinutes(from, to) {
     if (!from || !to) return null;
-    const km = haversine(from, to) * 1.28;
-    if (km < 0.4) return 0;
-    const rough = from.road === 'sterrato' || to.road === 'sterrato';
-    const mid = from.road === 'misto' || to.road === 'misto';
-    const speed = rough ? 26 : mid ? 42 : (km > 30 ? 74 : km > 10 ? 58 : 42);
-    return Math.round(km / speed * 60 + 3);
+    const km = haversine(from, to);
+    const base = asphaltMinutes(from, to);
+    const eFrom = extraMin[from.id] || 0, eTo = extraMin[to.id] || 0;
+    const w = Math.min(1, km / 15);
+    const penalty = w * (eFrom + eTo) + (1 - w) * Math.abs(eTo - eFrom);
+    return Math.round(base + penalty);
   }
 
   function fmtMin(m) {
@@ -131,6 +162,36 @@ const App = (() => {
 
   const TYPE_ICON = { spiaggia: '🏖️', natura: '🌋', borgo: '🏘️', panorama: '👁️', cultura: '🏛️', attivita: '🎯' };
   const ACCESS_LABEL = { facile: 'Accesso facile', medio: 'Accesso medio', difficile: 'Sterrato', '4x4': 'Solo 4x4', barca: 'In barca' };
+
+  /* ------------------------------- MAREE ------------------------------ */
+  const tideCache = {};
+  function tidesOf(date) {
+    if (!window.Tides) return null;
+    if (!tideCache[date]) { try { tideCache[date] = Tides.forDate(date); } catch (e) { tideCache[date] = null; } }
+    return tideCache[date];
+  }
+
+  /** Riga marea del giorno + eventuale avviso sui posti che dipendono dalla marea. */
+  function tideBar(date, dayState) {
+    const t = tidesOf(date);
+    if (!t) return '';
+    const seq = t.events.map(e =>
+      `<span class="tide-ev ${e.type}">${e.type === 'bassa' ? '🔻' : '🔺'} ${e.time}</span>`).join('');
+
+    const hints = SLOT_IDS.map(s => byId[dayState.slots[s]]).filter(p => p && p.tide).map(p => {
+      const wanted = p.tide === 'bassa' ? 'bassa' : 'alta';
+      const all = t.events.filter(e => e.type === wanted);
+      // interessano solo le maree in orario da spiaggia, non quelle notturne
+      const ev = all.filter(e => { const h = +e.time.slice(0, 2); return h >= 7 && h <= 21; });
+      if (!ev.length) return '';
+      return `<span class="tide-hint">🌊 <b>${esc(p.name.split(' /')[0].split(' (')[0])}</b>: ${esc(p.tideWhy)} → ${wanted} marea alle ${ev.map(e => e.time).join(' e ')}</span>`;
+    }).filter(Boolean);
+
+    return `<div class="tides">
+      <span class="tide-row">${seq}<span class="tide-range">${t.range.label} · ~${t.range.metres.toFixed(1)} m</span></span>
+      ${hints.join('')}
+    </div>`;
+  }
 
   function mapsLink(p) { return `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}`; }
   function taLink(name) { return `https://www.tripadvisor.it/Search?q=${encodeURIComponent(name + ' Fuerteventura')}`; }
@@ -183,6 +244,7 @@ const App = (() => {
           <h3><span class="day-dot"></span> ${d.label}</h3>
           <p class="day-meta"><span>🌇 Tramonto <b>${d.sunset}</b></span><span>📍 <b>${stops.length}</b> tappe</span></p>
         </header>
+        ${tideBar(d.date, day)}
         <div class="slots">${slotsHtml}</div>
         <div class="meals">${mealHtml}</div>
         <div class="day-note"><textarea data-note="${i}" placeholder="Note del giorno (prenotazioni, orari, chi guida…)">${esc(day.note || '')}</textarea></div>
@@ -236,6 +298,7 @@ const App = (() => {
             <span class="badge time">🚗 ${fmtMin(p.min)} da Corralejo</span>
             <span class="badge ${p.access === '4x4' ? 'badge-4x4' : p.access}">${ACCESS_LABEL[p.access]}</span>
             ${p.best ? `<span class="badge">⏰ meglio di ${p.best}</span>` : ''}
+            ${p.tide ? `<span class="badge tide">🌊 con ${p.tide} marea</span>` : ''}
           </div>
           <p class="card-desc">${esc(p.desc)}</p>
           <p class="card-park">🅿️ ${esc(p.park)}</p>
@@ -432,8 +495,10 @@ const App = (() => {
       });
       if (day.note) lines.push(`<div class="sum-line"><div class="sum-when">📝 Note</div><div class="sum-what">${esc(day.note)}</div></div>`);
 
+      const tide = tidesOf(d.date);
       return `<section class="sum-day" style="--day-color:${color}">
-        <h3>${d.label} <span class="badge time">🚗 ${stops.length ? fmtMin(drive) : '—'}</span> <span class="badge">🌇 ${d.sunset}</span></h3>
+        <h3>${d.label} <span class="badge time">🚗 ${stops.length ? fmtMin(drive) : '—'}</span> <span class="badge">🌇 ${d.sunset}</span>
+          ${tide ? `<span class="badge">🌊 ${tide.events.map(e => (e.type === 'bassa' ? '🔻' : '🔺') + e.time).join(' ')}</span>` : ''}</h3>
         ${lines.join('')}
       </section>`;
     }).join('');
@@ -574,6 +639,13 @@ const App = (() => {
 
     // azioni
     $('#btn-share').addEventListener('click', share);
+    $('#btn-proposal').addEventListener('click', () => {
+      if (confirm('Ricaricare l\'itinerario proposto? Le modifiche attuali andranno perse.')) {
+        state = proposalState(); save();
+        history.replaceState(null, '', location.pathname);
+        refresh(); toast('Itinerario proposto caricato ✨');
+      }
+    });
     $('#btn-export').addEventListener('click', exportJson);
     $('#btn-import').addEventListener('click', () => $('#file-import').click());
     $('#file-import').addEventListener('change', e => e.target.files[0] && importJson(e.target.files[0]));
