@@ -53,12 +53,28 @@ const App = (() => {
   }
 
   /* ------------------- serializzazione compatta per il link ----------- */
+  /* Le note del giorno sono lunghe e quasi sempre quelle della proposta: nel link
+     viaggia 0 ("uguale alla proposta") o 1 ("cancellata"), non il testo intero.
+     Senza questo accorgimento il link superava i 3000 caratteri. */
+  function packNote(note, i) {
+    const base = (PROPOSAL[i] && PROPOSAL[i].note) || '';
+    if (note === base) return 0;
+    if (!note) return 1;
+    return note;
+  }
+  function unpackNote(v, i) {
+    const base = (PROPOSAL[i] && PROPOSAL[i].note) || '';
+    if (v === 0 || v === undefined || v === null) return base;
+    if (v === 1) return '';
+    return String(v);
+  }
+
   function encodeState() {
-    const compact = state.days.map(d => [
+    const compact = state.days.map((d, i) => [
       SLOT_IDS.map(s => d.slots[s] || 0),
       packMeal(d.meals.pranzo),
       packMeal(d.meals.cena),
-      d.note || 0
+      packNote(d.note, i)
     ]);
     const json = JSON.stringify(compact);
     return btoa(unescape(encodeURIComponent(json))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -82,7 +98,7 @@ const App = (() => {
         SLOT_IDS.forEach((s, k) => { st.days[i].slots[s] = (d[0] && d[0][k]) || null; });
         st.days[i].meals.pranzo = unpackMeal(d[1]);
         st.days[i].meals.cena = unpackMeal(d[2]);
-        st.days[i].note = d[3] || '';
+        st.days[i].note = unpackNote(d[3], i);
       });
       return st;
     } catch (e) { return null; }
@@ -522,12 +538,24 @@ const App = (() => {
 
   /* ------------------------------ AZIONI ------------------------------ */
   function share() {
-    const url = `${location.origin}${location.pathname}#i=${encodeState()}`;
-    const done = () => toast('Link copiato: incollalo agli amici 🔗');
+    const hash = '#i=' + encodeState();
+    const url = `${location.origin}${location.pathname}${hash}`;
+    history.replaceState(null, '', hash);   // così anche copiando dalla barra si porta dietro tutto
+
+    // sul telefono apre direttamente il menù di condivisione (WhatsApp, Telegram…)
+    if (navigator.share) {
+      navigator.share({ title: 'Fuerteventura 2026 — il nostro itinerario', url })
+        .catch(() => copyLink(url));
+      return;
+    }
+    copyLink(url);
+  }
+
+  function copyLink(url) {
+    const done = () => toast('Link copiato: incollalo nel gruppo 🔗');
     if (navigator.clipboard && location.protocol !== 'file:') {
       navigator.clipboard.writeText(url).then(done).catch(() => prompt('Copia il link:', url));
     } else prompt('Copia il link:', url);
-    history.replaceState(null, '', '#i=' + encodeState());
   }
 
   function exportJson() {

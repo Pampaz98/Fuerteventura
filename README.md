@@ -38,8 +38,20 @@ e condividere il programma con gli amici via link.
 4. Salva: dopo circa un minuto il sito è online su
    `https://pampaz98.github.io/Fuerteventura/`
 
-Il link da mandare agli amici è quello, con in fondo la parte `#i=...` generata dal pulsante
-*Condividi*.
+### Come si condivide, in pratica
+
+Sono due cose diverse:
+
+1. **L'indirizzo del sito** (`https://pampaz98.github.io/Fuerteventura/`) si pubblica una volta
+   sola con i passaggi qui sopra. Chi lo apre vede l'itinerario proposto.
+2. **Il tuo itinerario** viaggia dentro il link: premi **🔗 Condividi** e l'app copia un indirizzo
+   con in fondo `#i=...`, che contiene tappe, pasti e note. Sul telefono si apre direttamente il
+   menù di condivisione (WhatsApp, Telegram…), sul computer il link finisce negli appunti.
+
+Chi riceve il link vede esattamente il tuo programma e può modificarlo: le sue modifiche restano
+sul suo telefono finché non preme a sua volta *Condividi* e ti rimanda il suo link. Non c'è un
+server: nessuno può rovinare il piano degli altri, ma non c'è nemmeno una sincronizzazione
+automatica.
 
 In locale basta aprire `index.html`, oppure `python3 -m http.server` nella cartella del progetto
 (consigliato: alcuni browser bloccano le foto se il file è aperto con `file://`).
