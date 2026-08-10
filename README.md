@@ -15,6 +15,8 @@ e condividere il programma con gli amici via link.
   per vicinanza** a quella tappa (con i minuti d'auto stimati) — la scelta finale resta sempre tua.
   Per i pasti ci sono i ristoranti ordinati per vicinanza più **🥪 Al sacco**, **🏠 A casa** e un
   campo libero per scrivere un posto qualsiasi.
+- **⇄ Sposta una giornata** — il pulsante in cima a ogni giorno la scambia con un'altra:
+  tappe, pasti e note si spostano insieme, tempi di guida e maree si ricalcolano da soli.
 - **🗺️ Mappa** — un colore per giorno, tappe numerate nell'ordine della giornata, percorso
   Corralejo → tappe → Corralejo, e la possibilità di accendere/spegnere i singoli giorni.
 - **🧾 Riepilogo** — tutto il viaggio su una pagina, con totale di guida stimata e stampa/PDF.

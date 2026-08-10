@@ -293,7 +293,9 @@ const App = (() => {
       return `
       <article class="day" style="--day-color:${color}">
         <header class="day-head">
-          <h3><span class="day-dot"></span> ${d.label}</h3>
+          <h3><span class="day-dot"></span> ${d.label}
+            <button class="day-swap" data-swap="${i}" title="Scambia questa giornata con un'altra">⇄</button>
+          </h3>
           <p class="day-meta"><span>🌇 Tramonto <b>${d.sunset}</b></span><span>📍 <b>${stops.length}</b> tappe</span></p>
         </header>
         ${tideBar(d.date, day)}
@@ -436,8 +438,39 @@ const App = (() => {
 
   function closePicker() { $('#modal').hidden = true; picker = null; }
 
+  /* ------------------- SCAMBIO DI DUE GIORNATE ------------------------ */
+  function openSwap(dayIdx) {
+    picker = { dayIdx, kind: 'swap' };
+    $('#modal-title').textContent = `Sposta ${TRIP.days[dayIdx].label}`;
+    $('#modal-sub').innerHTML = 'Scegli con quale giornata scambiarla: tappe, pasti e note si spostano insieme.';
+    $('#modal-search').value = '';
+    $('#modal').hidden = false;
+    $('#modal-list').innerHTML = TRIP.days.map((d, j) => {
+      if (j === dayIdx) return '';
+      const stops = SLOT_IDS.map(s => byId[state.days[j].slots[s]]).filter(Boolean);
+      return `
+        <button class="opt" data-swapwith="${j}">
+          <span class="opt-ico" style="color:${DAY_COLORS[j % DAY_COLORS.length]}">●</span>
+          <span class="opt-main">
+            <span class="opt-name">${d.label}</span>
+            <span class="opt-meta">${stops.length ? esc(stops.map(p => p.name.split(' /')[0].split(' (')[0]).join(' · ')) : 'giornata vuota'}</span>
+          </span>
+        </button>`;
+    }).join('');
+  }
+
+  function applySwap(targetIdx) {
+    if (!picker || picker.kind !== 'swap') return;
+    const i = picker.dayIdx;
+    const tmp = state.days[i];
+    state.days[i] = state.days[targetIdx];
+    state.days[targetIdx] = tmp;
+    save(); closePicker(); refresh();
+    toast(`${TRIP.days[i].label.split(' ')[0]} e ${TRIP.days[targetIdx].label.split(' ')[0]} scambiati ⇄`);
+  }
+
   function renderPickerList() {
-    if (!picker) return;
+    if (!picker || picker.kind === 'swap') return;
     const { dayIdx, kind, key } = picker;
     const q = $('#modal-search').value.trim().toLowerCase();
     const day = state.days[dayIdx];
@@ -690,6 +723,8 @@ const App = (() => {
         if (kind === 'slot') state.days[d].slots[key] = null; else state.days[d].meals[key] = null;
         save(); refresh(); return;
       }
+      const swap = e.target.closest('[data-swap]');
+      if (swap) { e.stopPropagation(); return openSwap(+swap.dataset.swap); }
       const slot = e.target.closest('[data-kind]');
       if (slot) openPicker(+slot.dataset.day, slot.dataset.kind, slot.dataset.key);
     });
@@ -705,6 +740,8 @@ const App = (() => {
     // modale
     $('#modal').addEventListener('click', e => {
       if (e.target.closest('[data-close]')) return closePicker();
+      const sw = e.target.closest('[data-swapwith]');
+      if (sw) return applySwap(+sw.dataset.swapwith);
       const pick = e.target.closest('[data-pick]');
       if (pick) return applyPick(pick.dataset.pick);
       if (e.target.id === 'free-add') {
@@ -720,6 +757,7 @@ const App = (() => {
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closePicker(); });
     $('#modal-search').addEventListener('input', renderPickerList);
     $('#modal-clear').addEventListener('click', () => {
+      if (!picker || picker.kind === 'swap') return closePicker();
       const { dayIdx, kind, key } = picker;
       if (kind === 'slot') state.days[dayIdx].slots[key] = null; else state.days[dayIdx].meals[key] = null;
       save(); closePicker(); refresh();

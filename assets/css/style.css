@@ -112,6 +112,11 @@ main{padding:20px clamp(12px,3vw,28px) 60px;max-width:1500px;margin:0 auto}
 }
 .day-head{padding:12px 14px 10px;border-bottom:1px solid var(--line)}
 .day-head h3{font-size:16px;display:flex;align-items:center;gap:8px}
+.day-swap{
+  margin-left:auto;border:1px solid var(--line);background:#fff;color:var(--ink-soft);
+  border-radius:8px;width:28px;height:26px;font-size:14px;line-height:1;transition:.15s;
+}
+.day-swap:hover{border-color:var(--turq);color:var(--turq);background:var(--sand)}
 .day-dot{width:11px;height:11px;border-radius:50%;background:var(--day-color)}
 .day-meta{margin:5px 0 0;font-size:12px;color:var(--ink-soft);display:flex;gap:10px;flex-wrap:wrap}
 .day-meta b{color:var(--ink);font-weight:600}
