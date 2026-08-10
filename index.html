@@ -27,6 +27,7 @@
     <button class="tab" data-view="riepilogo" role="tab">🧾 Riepilogo</button>
   </nav>
   <div class="topbar-actions">
+    <span class="save-state" id="save-state" title="Le modifiche restano su questo dispositivo">✓ Salvato</span>
     <button class="btn btn-primary" id="btn-share">🔗 Condividi</button>
     <details class="menu">
       <summary class="btn">⋯</summary>
@@ -41,6 +42,8 @@
     </details>
   </div>
 </header>
+
+<div class="banner" id="banner" hidden></div>
 
 <main>
   <!-- ======================= CALENDARIO ======================= -->

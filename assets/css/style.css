@@ -71,6 +71,30 @@ input,select{font:inherit}
 .menu-item:hover{background:var(--sand)}
 .menu-item.danger{color:var(--danger)}
 
+/* ------------------- indicatore di salvataggio ---------------------- */
+.save-state{
+  font-size:12px;color:rgba(255,255,255,.72);white-space:nowrap;
+  border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:5px 11px;
+  transition:background .25s,color .25s,transform .25s;
+}
+.save-state.is-flash{background:#25c46f;color:#fff;border-color:transparent;transform:scale(1.05)}
+.save-state.is-error{background:#e04f4f;color:#fff;border-color:transparent}
+
+/* --------------------------- banner avviso -------------------------- */
+.banner{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  margin:14px clamp(12px,3vw,28px) 0;padding:11px 16px;
+  background:#fff6e6;border:1px solid #f0d9a8;border-radius:12px;
+  font-size:13.5px;color:#6b4e0e;max-width:1500px;
+}
+.banner[hidden]{display:none}
+.btn-mini{
+  border:0;background:var(--ocean);color:#fff;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600;
+}
+.btn-mini:hover{background:var(--ocean-2)}
+.btn-mini.ghost{background:transparent;color:#8a6a1e;border:1px solid #e2cb9a;font-weight:400}
+.btn-mini.ghost:hover{background:#f7ead1}
+
 /* ------------------------------- views ------------------------------ */
 main{padding:20px clamp(12px,3vw,28px) 60px;max-width:1500px;margin:0 auto}
 .view{display:none}
@@ -290,6 +314,8 @@ main{padding:20px clamp(12px,3vw,28px) 60px;max-width:1500px;margin:0 auto}
   .topbar{padding:10px 12px;gap:10px}
   .topbar h1{font-size:17px}
   .tabs{order:3;width:100%;overflow-x:auto;padding-bottom:2px;flex-wrap:nowrap}
+  .save-state{font-size:11px;padding:4px 9px}
+  .banner{margin:12px}
   .tab{white-space:nowrap}
   #map{height:calc(100vh - 230px)}
   .meals{grid-template-columns:1fr}

@@ -23,8 +23,33 @@ const App = (() => {
     };
   }
 
+  const BACKUP_KEY = STORE_KEY + '.bak';
+  let linkNotice = false;   // true se questa sessione è arrivata da un link condiviso
+
   function save() {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* modalità privata */ }
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(state));
+      markSaved(true);
+    } catch (e) {
+      markSaved(false);     // navigazione privata o spazio esaurito
+    }
+  }
+
+  /** L'app salva da sola: questo indicatore serve a farlo vedere. */
+  function markSaved(ok) {
+    const el = document.getElementById('save-state');
+    if (!el) return;
+    if (ok) {
+      el.textContent = '✓ Salvato';
+      el.classList.remove('is-error');
+      el.classList.add('is-flash');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('is-flash'), 1200);
+    } else {
+      el.textContent = '⚠️ Non salvato';
+      el.classList.add('is-error');
+      el.title = 'Il browser non permette di salvare (navigazione privata?). Usa Condividi o Esporta JSON per non perdere il lavoro.';
+    }
   }
 
   /** L'itinerario proposto, come stato iniziale. */
@@ -41,7 +66,18 @@ const App = (() => {
 
   function load() {
     const fromUrl = decodeState(location.hash.replace(/^#i=/, ''));
-    if (fromUrl) { state = fromUrl; save(); return; }
+    if (fromUrl) {
+      // Aprire il link di un amico sostituisce il proprio itinerario: prima se ne
+      // tiene una copia, così si può tornare indietro con un click.
+      try {
+        const prev = localStorage.getItem(STORE_KEY);
+        if (prev && prev !== JSON.stringify(fromUrl)) {
+          localStorage.setItem(BACKUP_KEY, prev);
+          linkNotice = true;
+        }
+      } catch (e) { /* niente storage, niente backup */ }
+      state = fromUrl; save(); return;
+    }
     try {
       const raw = localStorage.getItem(STORE_KEY);
       if (raw) {
@@ -578,6 +614,33 @@ const App = (() => {
     fr.readAsText(file);
   }
 
+  /** Avviso quando si è appena aperto l'itinerario di qualcun altro. */
+  function showLinkBanner() {
+    const b = $('#banner');
+    if (!b) return;
+    b.hidden = false;
+    b.innerHTML = `
+      <span>👀 Stai guardando un itinerario <b>ricevuto da un link</b>. Ha preso il posto del tuo su questo dispositivo.</span>
+      <button class="btn-mini" id="banner-restore">↩️ Torna al mio</button>
+      <button class="btn-mini ghost" id="banner-close">Va bene</button>`;
+    $('#banner-close').addEventListener('click', () => { b.hidden = true; });
+    $('#banner-restore').addEventListener('click', () => {
+      try {
+        const bak = JSON.parse(localStorage.getItem(BACKUP_KEY));
+        if (bak && bak.days) {
+          state = bak;
+          localStorage.removeItem(BACKUP_KEY);
+          save();
+          history.replaceState(null, '', location.pathname);
+          refresh(); b.hidden = true;
+          toast('Ripristinata la tua versione ↩️');
+          return;
+        }
+      } catch (e) { /* niente da ripristinare */ }
+      toast('Non trovo una versione precedente ✖');
+    });
+  }
+
   function countdown() {
     const start = new Date('2026-08-14T00:00:00');
     const diff = Math.ceil((start - new Date()) / 86400000);
@@ -613,6 +676,7 @@ const App = (() => {
     safeMap(() => FMap.init());
     refresh();
     renderDatabase();
+    if (linkNotice) showLinkBanner();
 
     // tab
     $$('.tab').forEach(t => t.addEventListener('click', () => switchView(t.dataset.view)));

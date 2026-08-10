@@ -53,6 +53,24 @@ sul suo telefono finché non preme a sua volta *Condividi* e ti rimanda il suo l
 server: nessuno può rovinare il piano degli altri, ma non c'è nemmeno una sincronizzazione
 automatica.
 
+### Salvataggio
+
+Non c'è un pulsante "salva": ogni modifica finisce subito nella memoria del browser e
+l'indicatore **✓ Salvato** in alto lampeggia a conferma. Riaprendo il sito sullo stesso
+dispositivo si ritrova tutto.
+
+Due cose da sapere:
+
+- Il salvataggio è **per dispositivo e per browser**. Il telefono e il computer hanno due copie
+  separate: per allinearle si usa *Condividi* e si apre il link sull'altro.
+- Aprendo il link di un amico, il suo itinerario **prende il posto del tuo** su quel dispositivo.
+  Per sicurezza l'app tiene da parte la tua versione e mostra un avviso con il pulsante
+  **↩️ Torna al mio**.
+
+Se l'indicatore diventa **⚠️ Non salvato** il browser sta bloccando la memoria locale
+(tipicamente in navigazione privata): in quel caso usa *Esporta JSON* o *Condividi* prima di
+chiudere la pagina. *Esporta JSON* resta comunque il modo migliore per tenersi un backup vero.
+
 In locale basta aprire `index.html`, oppure `python3 -m http.server` nella cartella del progetto
 (consigliato: alcuni browser bloccano le foto se il file è aperto con `file://`).
 
