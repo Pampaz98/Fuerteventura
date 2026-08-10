@@ -5,7 +5,7 @@ e condividere il programma con gli amici via link.
 
 ## Cosa c'è dentro
 
-- **📚 Database luoghi** — 55 tra spiagge, borghi, vulcani, miradores e attività, ognuno con:
+- **📚 Database luoghi** — 58 tra spiagge, borghi, vulcani, miradores e attività, ognuno con:
   tempo d'auto stimato da Corralejo, facilità di accesso (asfalto / sterrato / 4x4 / barca),
   nota sul parcheggio, momento migliore della giornata, tag, foto (Wikimedia Commons) e link a
   Google Maps, TripAdvisor e Google Immagini. Filtri per tipo, zona, accesso e distanza massima.

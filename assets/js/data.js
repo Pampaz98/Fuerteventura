@@ -39,6 +39,13 @@ const PLACES = [
     desc: 'Una delle cale più belle del tratto dune, con qualche roccia che ripara dal vento. Sabbia finissima e acqua limpida.'
   },
   {
+    id: 'el-dormidero', name: 'Playa El Dormidero', type: 'spiaggia', zone: 'Nord',
+    lat: 28.7130, lng: -13.8330, min: 10, access: 'medio', road: 'asfalto',
+    park: 'Spiazzo sulla FV-1a, poi 5 min a piedi tra le dune: l\'accesso non è segnalato',
+    tags: ['dune', 'tranquilla', 'acqua calma', 'nudismo'], best: 'mattina',
+    desc: 'Uno degli arenili nascosti del Parco delle Dune, circa 440 m di sabbia dorata tra Playa Alzada e Playa del Moro. Acqua calma e pochissima gente proprio perché il sentiero non è indicato: si punta alle dune e si scende verso il mare.'
+  },
+  {
     id: 'playa-alzada', name: 'Playa Alzada / Bajo Negro', type: 'spiaggia', zone: 'Nord',
     lat: 28.7186, lng: -13.8348, min: 7, access: 'facile', road: 'asfalto',
     park: 'Spiazzi sterrati sulla FV-1a',
@@ -89,6 +96,21 @@ const PLACES = [
     park: 'Parcheggio sterrato grande sopra la spiaggia',
     tags: ['surf', 'onde', 'tramonto', 'lunga'], best: 'tramonto',
     desc: 'Grande spiaggia selvaggia di sabbia dorata a sud di El Cotillo. Bellissima al tramonto, ma attenzione a correnti e risacca: si nuota solo con mare calmo.'
+  },
+  {
+    id: 'playa-aguila', name: 'Playa del Águila (La Escalera)', type: 'spiaggia', zone: 'Nord',
+    lat: 28.6555, lng: -14.0170, min: 40, access: 'difficile', road: 'sterrato',
+    park: 'Pista sterrata di 3,5 km a sud di El Cotillo, si parcheggia in cima alla falesia; poi 130 gradini scavati nella roccia',
+    tags: ['selvaggia', 'falesie', 'deserta', 'scalinata', 'nudismo'], best: 'pomeriggio',
+    tide: 'bassa', tideWhy: 'con l\'alta la sabbia si riduce a una striscia sotto la falesia',
+    desc: 'La cala segreta di El Cotillo: sabbia dorata chiusa tra falesie a picco, si scende con una scalinata di 130 gradini. Nessun servizio, nessuna ombra, quasi nessuno. Mare della costa ovest: si entra in acqua solo se è piatto, le correnti qui sono serie.'
+  },
+  {
+    id: 'popcorn-beach', name: 'Popcorn Beach (Playa del Bajo de la Burra)', type: 'spiaggia', zone: 'Nord',
+    lat: 28.7445, lng: -13.9420, min: 25, access: 'difficile', road: 'sterrato',
+    park: 'Pista sterrata di circa 7 km da Corralejo verso Majanicho, piena di buche: piano con l\'utilitaria',
+    tags: ['insolita', 'fotografia', 'niente bagno', 'fuori rotta'], best: 'mattina',
+    desc: 'La spiaggia di "popcorn": non è sabbia ma rodoliti, scheletri di alghe calcaree bianche accumulati dal mare. Spettacolare da vedere e fotografare, ma NON si fa il bagno (fondale roccioso e onde) e soprattutto NON si raccolgono i popcorn: sono materiale protetto e le multe sono salate. Andare presto: a metà mattina si riempie.'
   },
   {
     id: 'cotillo-borgo', name: 'El Cotillo (borgo e porticciolo)', type: 'borgo', zone: 'Nord',
